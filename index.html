@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linear Regression Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+</head>
+<body>
+
+
+<!-- ═══════════════════════════════════════
+     SEÇÃO: TEORIA
+════════════════════════════════════════ -->
+<div id="sec-teoria" class="section active">
+
+  <!-- Hero -->
+  <div class="hero">
+
+    <!-- Partículas flutuantes -->
+    <div class="hero-particle" style="left:5%;top:20%;animation-delay:0s;animation-duration:12s"></div>
+    <div class="hero-particle" style="left:14%;top:72%;animation-delay:1.5s;animation-duration:14s"></div>
+    <div class="hero-particle" style="left:27%;top:44%;animation-delay:3s;animation-duration:11s"></div>
+    <div class="hero-particle" style="left:42%;top:82%;animation-delay:0.8s;animation-duration:16s"></div>
+    <div class="hero-particle" style="left:57%;top:28%;animation-delay:2.2s;animation-duration:13s"></div>
+    <div class="hero-particle" style="left:68%;top:62%;animation-delay:4s;animation-duration:10s"></div>
+    <div class="hero-particle" style="left:80%;top:18%;animation-delay:1s;animation-duration:15s"></div>
+    <div class="hero-particle" style="left:90%;top:52%;animation-delay:3.5s;animation-duration:12s"></div>
+    <div class="hero-particle" style="left:35%;top:8%;animation-delay:2s;animation-duration:14s"></div>
+    <div class="hero-particle" style="left:73%;top:78%;animation-delay:0.5s;animation-duration:11s"></div>
+    <div class="hero-particle" style="left:11%;top:38%;animation-delay:5s;animation-duration:13s"></div>
+    <div class="hero-particle" style="left:53%;top:68%;animation-delay:1.8s;animation-duration:16s"></div>
+
+    <!-- Conteúdo -->
+    <div class="hero-content">
+
+      <!-- Ícone do app -->
+      <div class="hero-icon-wrap">
+        <div class="hero-app-icon">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="10" cy="40" r="3" fill="white" opacity="0.85"/>
+            <circle cx="18" cy="33" r="3" fill="white" opacity="0.85"/>
+            <circle cx="24" cy="27" r="3" fill="white" opacity="0.85"/>
+            <circle cx="32" cy="20" r="3" fill="white" opacity="0.85"/>
+            <circle cx="40" cy="14" r="3" fill="white" opacity="0.85"/>
+            <line x1="7" y1="44" x2="46" y2="10" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.95"/>
+          </svg>
+        </div>
+        <div class="hero-icon-ring"></div>
+        <div class="hero-icon-badge">✨</div>
+      </div>
+
+      <!-- Título -->
+      <h2 class="hero-title">
+        <span class="hero-title-gradient">Linear Regression</span>
+        <span class="hero-title-lab">Lab</span>
+      </h2>
+
+      <!-- Divisória -->
+      <div class="hero-divider">
+        <span class="hero-div-line"></span>
+        <span class="hero-div-text">Regressão Linear &amp; Mínimos Quadrados</span>
+        <span class="hero-div-line"></span>
+      </div>
+
+      <!-- Descrição -->
+      <p class="hero-desc">
+        Entenda como uma reta se ajusta a dados reais, o que significa "melhor ajuste"
+        e por que o método dos mínimos quadrados é tão fundamental em pesquisa clínica.
+      </p>
+
+      <!-- Autor -->
+      <p class="hero-author">Prof. Henrique Alvarenga da Silva — UFSJ</p>
+
+      <!-- CTA -->
+      <div class="hero-cta-group">
+        <button class="btn-hero" onclick="showSection('atividade')">Iniciar Atividade →</button>
+        <button class="btn-hero-ghost" onclick="showSection('como-usar')">Como Usar</button>
+      </div>
+    </div>
+
+    <!-- Indicador de scroll -->
+    <div class="hero-scroll"><div class="hero-scroll-dot"></div></div>
+  </div>
+
+  <!-- Conteúdo teórico -->
+  <div class="teoria-body">
+
+    <p class="teoria-section-title">Conceitos Fundamentais</p>
+
+    <div class="teoria-cards">
+
+      <div class="tcard">
+        <div class="tcard-icon">📏</div>
+        <h3>O que é Regressão Linear?</h3>
+        <p>
+          Regressão linear descreve a relação entre duas variáveis quantitativas
+          através de uma reta. Dado um conjunto de pares (x, y), buscamos a reta
+          que melhor representa o padrão subjacente nos dados.
+        </p>
+        <div class="formula">ŷ = β₀ + β₁x</div>
+        <ul>
+          <li><strong>β₀</strong> — intercepto: valor previsto quando x = 0</li>
+          <li><strong>β₁</strong> — inclinação: variação de y por unidade de x</li>
+        </ul>
+      </div>
+
+      <div class="tcard green">
+        <div class="tcard-icon">🎯</div>
+        <h3>O que são Resíduos?</h3>
+        <p>
+          Para cada observação, o <strong>resíduo</strong> (εᵢ) é a distância vertical
+          entre o valor observado e o valor previsto pela reta.
+          Nesta atividade, os resíduos aparecem como segmentos <span style="color:#f97316;font-weight:700">laranjas</span>.
+        </p>
+        <div class="formula">εᵢ = yᵢ − ŷᵢ = yᵢ − (β₀ + β₁xᵢ)</div>
+        <p style="margin-top:8px">
+          Uma reta ajustada gera resíduos pequenos; uma reta ruim gera resíduos grandes.
+        </p>
+      </div>
+
+      <div class="tcard orange">
+        <div class="tcard-icon">Σ</div>
+        <h3>RSS — Soma dos Quadrados dos Resíduos</h3>
+        <p>
+          Para medir o ajuste geral da reta, somamos os quadrados de todos os resíduos.
+          Quanto menor o RSS, melhor o ajuste.
+        </p>
+        <div class="formula">
+          RSS = Σ εᵢ² = Σ (yᵢ − ŷᵢ)²
+        </div>
+        <p style="margin-top:8px">
+          Por que elevar ao quadrado? Para penalizar erros grandes de forma
+          desproporcional e para tratar resíduos positivos e negativos igualmente.
+        </p>
+      </div>
+
+      <div class="tcard purple">
+        <div class="tcard-icon">⚡</div>
+        <h3>Mínimos Quadrados (OLS)</h3>
+        <p>
+          O método OLS encontra os valores de β₀ e β₁ que <em>minimizam</em> o RSS.
+          A solução analítica é única e computacionalmente eficiente:
+        </p>
+        <div class="formula">
+          β₁ = Σ[(xᵢ−x̄)(yᵢ−ȳ)] / Σ[(xᵢ−x̄)²]<br>
+          β₀ = ȳ − β₁x̄
+        </div>
+        <p style="margin-top:8px">
+          Nesta atividade, você ajusta manualmente — e depois compara com a solução OLS.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="teoria-full">
+      <h3>🏥 Por que isso importa na área da saúde?</h3>
+      <p>
+        A regressão linear é uma ferramenta central em epidemiologia clínica, medicina
+        baseada em evidências e pesquisa em saúde. Ela permite quantificar relações entre
+        variáveis — como a associação entre horas de sono e desempenho cognitivo, entre
+        IMC e pressão arterial, ou entre atividade física e glicemia — expressando essa
+        relação de forma precisa, interpretável e testável.
+      </p>
+      <p>
+        Compreender o método dos mínimos quadrados não é apenas um requisito técnico: é
+        entender <em>por que</em> a reta que minimiza os quadrados dos erros é a escolha
+        ótima, e o que acontece com o ajuste quando os dados têm outliers, variabilidade
+        alta ou relações não lineares.
+      </p>
+    </div>
+
+    <div class="teoria-cta">
+      <p>Agora que você conhece os conceitos — experimente ajustar retas em dados reais da saúde.</p>
+      <button class="btn-hero" onclick="showSection('atividade')">
+        🎮 Iniciar Atividade →
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     SEÇÃO: ATIVIDADE — Linear Regression Lab
+════════════════════════════════════════ -->
+<div id="sec-atividade" class="section">
+
+  <!-- ──────────────────────────────────────
+       TELA 1: HOME / INÍCIO
+  ─────────────────────────────────────── -->
+  <div id="screen-home" class="game-screen active">
+    <button class="btn-back-teoria" onclick="showSection('teoria')">← Voltar à Teoria</button>
+    <div class="liga-home">
+      <div class="liga-logo" id="liga-logo-7" onclick="easterEggClick()" title="">7️⃣</div>
+      <h2 class="liga-home-title">Linear Regression Lab</h2>
+      <p class="liga-home-sub">
+        7 rounds · 7 datasets clínicos · Ajuste a reta contra o relógio<br>
+        e aprenda regressão linear na prática. <span class="lucky7">Lucky 7!</span>
+      </p>
+
+      <div class="liga-rounds-preview">
+        <div class="liga-round-item">
+          <span class="lri-icon">😴</span>
+          <span class="lri-info">
+            <span class="lri-title">Round 1 — Sono × Cognição</span>
+            <span class="lri-meta">⏱ 25s &nbsp;·&nbsp; ⭐☆☆☆ Introdutório</span>
+          </span>
+        </div>
+        <div class="liga-round-item">
+          <span class="lri-icon">🏃</span>
+          <span class="lri-info">
+            <span class="lri-title">Round 2 — Exercício × Glicemia</span>
+            <span class="lri-meta">⏱ 25s &nbsp;·&nbsp; ⭐⭐☆☆ Relação negativa</span>
+          </span>
+        </div>
+        <div class="liga-round-item">
+          <span class="lri-icon">⚖️</span>
+          <span class="lri-info">
+            <span class="lri-title">Round 3 — IMC × Pressão Arterial</span>
+            <span class="lri-meta">⏱ 20s &nbsp;·&nbsp; ⭐⭐⭐☆ Com outliers</span>
+          </span>
+        </div>
+        <div class="liga-round-item">
+          <span class="lri-icon">🧘</span>
+          <span class="lri-info">
+            <span class="lri-title">Round 4 — Estresse × Cortisol</span>
+            <span class="lri-meta">⏱ 20s &nbsp;·&nbsp; ⭐⭐⭐⭐ Escala pequena</span>
+          </span>
+        </div>
+        <div class="liga-round-item">
+          <span class="lri-icon">☀️</span>
+          <span class="lri-info">
+            <span class="lri-title">Round 5 — Vitamina D × Depressão</span>
+            <span class="lri-meta">⏱ 15s &nbsp;·&nbsp; ⭐⭐⭐⭐ Negativo + ruído</span>
+          </span>
+        </div>
+        <div class="liga-round-item">
+          <span class="lri-icon">🫁</span>
+          <span class="lri-info">
+            <span class="lri-title">Round 6 — Freq. Respiratória × SpO₂</span>
+            <span class="lri-meta">⏱ 15s &nbsp;·&nbsp; ⭐⭐⭐⭐ Escala comprimida</span>
+          </span>
+        </div>
+        <div class="liga-round-item">
+          <span class="lri-icon">💊</span>
+          <span class="lri-info">
+            <span class="lri-title">Round 7 — Dose × Redução da PA</span>
+            <span class="lri-meta">⏱ 15s &nbsp;·&nbsp; ⭐⭐⭐⭐ Dose-resposta</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="liga-scoring-tip">
+        💡 Pontuação: até 100 pts por ajuste + bônus de velocidade. Máximo: 1050 pts.
+      </div>
+
+      <button class="btn-liga-start" onclick="startLiga()">▶ Jogar</button>
+    </div>
+  </div>
+
+  <!-- ──────────────────────────────────────
+       TELA 2: BRIEFING (antes de cada round)
+  ─────────────────────────────────────── -->
+  <div id="screen-briefing" class="game-screen">
+    <div class="liga-briefing">
+      <div class="brief-round-badge" id="brief-round-label">—</div>
+      <div class="brief-icon" id="brief-icon">😴</div>
+      <h2 class="brief-title" id="brief-title">Sono × Cognição</h2>
+      <p class="brief-desc" id="brief-desc">—</p>
+
+      <div class="brief-meta-row">
+        <div class="brief-meta-item">
+          <span class="bmi-label">⏱ Tempo</span>
+          <span class="bmi-value" id="brief-time">15s</span>
+        </div>
+        <div class="brief-meta-item">
+          <span class="bmi-label">📊 Dificuldade</span>
+          <span class="bmi-value" id="brief-difficulty">⭐☆☆☆</span>
+        </div>
+      </div>
+
+      <div class="brief-hint" id="brief-hint" style="display:none">—</div>
+
+      <div class="brief-score-so-far" id="brief-score-so-far"></div>
+
+      <button class="btn-liga-start" onclick="startRound()">Começar Rodada →</button>
+    </div>
+  </div>
+
+  <!-- ──────────────────────────────────────
+       TELA 3: JOGO (plot + timer)
+  ─────────────────────────────────────── -->
+  <div id="screen-play" class="game-screen">
+
+    <!-- Cabeçalho do round com timer -->
+    <div class="play-header">
+      <div class="play-round-label" id="play-round-label">—</div>
+      <div class="play-timer-center">
+        <div class="play-timer-num" id="play-timer-num">15</div>
+        <div class="play-timer-bar-bg">
+          <div class="play-timer-bar" id="play-timer-bar" style="width:100%"></div>
+        </div>
+      </div>
+      <div class="play-pct-live">
+        <span id="play-pct-live">0%</span>
+        <span class="play-pct-label">do ótimo</span>
+      </div>
+    </div>
+
+    <!-- Botão de confirmação antecipada -->
+    <div class="play-confirm-wrap">
+      <button class="btn-confirm-round" onclick="confirmRound()">
+        🎯 Confirmar ajuste
+        <span class="btn-confirm-sub">Terminar agora e garantir o bônus de velocidade</span>
+      </button>
+    </div>
+
+    <!-- Plot principal -->
+    <div class="main-card">
+      <div class="dataset-description" id="dsDescription">—</div>
+      <div class="main-content">
+
+        <div class="plot-area">
+          <svg id="mainSvg" viewBox="0 0 520 370"></svg>
+          <div class="drag-hint">↔ Arraste os círculos azuis para girar &nbsp;|&nbsp; Arraste a linha para transladar</div>
+        </div>
+
+        <div class="sidebar">
+          <div class="stat-card">
+            <h3>Seu Ajuste</h3>
+            <div class="coef-row">
+              <span class="coef-label">Inclinação (β₁)</span>
+              <span class="coef-value" id="valSlope">—</span>
+            </div>
+            <div class="coef-row">
+              <span class="coef-label">Intercepto (β₀)</span>
+              <span class="coef-value" id="valIntercept">—</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <h3>RSS</h3>
+            <div class="rss-value" id="valRSS">—</div>
+            <div class="rss-sub" id="rssHint">% do ótimo alcançado</div>
+            <div class="prog-wrap" id="progWrap" style="display:block;margin-top:8px">
+              <div class="prog-bar" id="progBar" style="width:0%"></div>
+            </div>
+            <div class="prog-label" id="progLabel" style="display:flex">
+              <span>início</span><span>ótimo</span>
+            </div>
+          </div>
+
+          <!-- Painel de solução OLS — revelado ao fim do round -->
+          <div class="solution-panel" id="solutionPanel">
+            <h4>Solução OLS</h4>
+            <div class="sol-row"><span>Inclinação:</span><span id="solSlope">—</span></div>
+            <div class="sol-row"><span>Intercepto:</span><span id="solIntercept">—</span></div>
+            <div class="sol-row"><span>RSS mínimo:</span><span id="solRSS">—</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Heatmap (opcional, colapsado por padrão) -->
+    <div class="heatmap-section">
+      <div class="heatmap-header" id="heatmapHeader" onclick="toggleHeatmap()">
+        <h2>🗺️ Paisagem do RSS — Espaço de Parâmetros</h2>
+        <span class="heatmap-toggle" id="heatmapToggle">▼ Mostrar</span>
+      </div>
+      <div class="heatmap-body" id="heatmapBody">
+        <p class="heatmap-explain">
+          Cada pixel representa uma combinação de inclinação (eixo X) e intercepto (eixo Y).
+          Cores escuras = RSS baixo (bom ajuste). Cores claras = RSS alto (ajuste ruim).
+          O <span style="color:#10b981;font-weight:700">● ponto verde</span> é a solução ótima.
+          O <span style="color:white;background:#334155;padding:0 3px;border-radius:3px">● ponto branco</span> é sua posição atual.
+        </p>
+        <div class="heatmap-canvas-wrap">
+          <canvas id="heatmapCanvas" width="420" height="280"></canvas>
+          <div class="heatmap-legend">
+            <span>RSS alto</span>
+            <canvas id="legendCanvas" width="120" height="10"></canvas>
+            <span>RSS baixo</span>
+          </div>
+          <div class="heatmap-axis-labels">
+            <span id="hmSlopeMin">—</span>
+            <span style="text-align:center">← Inclinação (β₁) →</span>
+            <span id="hmSlopeMax">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:#94a3b8;width:100%;max-width:420px;margin-top:4px">
+            <span>↕ Intercepto (β₀): <span id="hmIntMin">—</span> (baixo) … <span id="hmIntMax">—</span> (alto)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /screen-play -->
+
+  <!-- ──────────────────────────────────────
+       TELA 4: RESULTADO DO ROUND
+  ─────────────────────────────────────── -->
+  <div id="screen-round-result" class="game-screen">
+    <div class="liga-round-result">
+      <div class="rr-emoji" id="rr-emoji">🥇</div>
+      <div class="rr-round-label" id="rr-round">Rodada 1 de 4</div>
+      <div class="rr-pct" id="rr-pct">—% do ótimo</div>
+
+      <div class="rr-score-card">
+        <div class="rr-score-row">
+          <span>Ajuste (base)</span>
+          <span><span id="rr-base">—</span> pts</span>
+        </div>
+        <div class="rr-score-row bonus">
+          <span>Bônus velocidade</span>
+          <span>+<span id="rr-bonus">—</span> pts</span>
+        </div>
+        <div class="rr-score-row total">
+          <span>Total desta rodada</span>
+          <span><span id="rr-total">—</span> pts</span>
+        </div>
+        <div class="rr-score-row accum">
+          <span>Pontuação acumulada</span>
+          <span><strong><span id="rr-accum">—</span> pts</strong></span>
+        </div>
+      </div>
+
+      <div class="rr-msg" id="rr-msg">—</div>
+
+      <button class="btn-liga-start" id="rr-continue-btn" onclick="afterRoundResult()">
+        Próximo: Pergunta Rápida →
+      </button>
+    </div>
+  </div>
+
+  <!-- ──────────────────────────────────────
+       TELA 5: QUIZ
+  ─────────────────────────────────────── -->
+  <div id="screen-quiz" class="game-screen">
+    <div class="liga-quiz">
+      <div class="quiz-header">
+        <div class="quiz-transition-label" id="quiz-transition-label">O que você aprendeu — Rodada 1</div>
+        <div class="quiz-q-counter" id="quiz-q-counter">Pergunta 1 de 2</div>
+      </div>
+
+      <div class="quiz-question" id="quiz-question">—</div>
+
+      <div class="quiz-options" id="quiz-options">
+        <!-- Injetado por game.js -->
+      </div>
+
+      <div class="quiz-feedback" id="quiz-feedback"></div>
+
+      <div class="quiz-continue-wrap">
+        <button class="btn-quiz-continue" id="quiz-continue-btn" onclick="quizContinue()" style="display:none">
+          Continuar →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ──────────────────────────────────────
+       TELA 6: PLACAR FINAL
+  ─────────────────────────────────────── -->
+  <div id="screen-final" class="game-screen">
+    <div class="liga-final">
+      <div class="final-title">🏁 Fim do Lab!</div>
+
+      <div class="final-score-big">
+        <span id="final-total-score">—</span>
+        <span class="final-pct" id="final-pct">—%</span>
+      </div>
+
+      <div class="final-breakdown" id="final-breakdown">
+        <!-- Injetado por game.js -->
+      </div>
+
+      <div class="final-badge-box">
+        <div class="final-badge" id="final-badge">🏆 —</div>
+        <div class="final-badge-msg" id="final-badge-msg">—</div>
+      </div>
+
+      <button class="btn-liga-start" onclick="startLiga()">🔄 Jogar Novamente</button>
+    </div>
+  </div>
+
+</div><!-- /sec-atividade -->
+
+
+<!-- ═══════════════════════════════════════
+     SEÇÃO: COMO USAR (parte da página teoria)
+════════════════════════════════════════ -->
+<div id="sec-como-usar" class="section">
+  <div class="section-page-divider"></div>
+  <div class="como-usar-body">
+    <h2>❓ Como Usar</h2>
+    <p class="page-sub">Um guia passo a passo para tirar o máximo do Linear Regression Lab.</p>
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-icon">▶️</div>
+        <div class="step-content">
+          <h4>Inicie o Lab</h4>
+          <p>Na aba <strong>Atividade</strong>, clique em <strong>"▶ Jogar"</strong> para começar.
+             O Lab tem 7 rounds sequenciais — cada um apresenta um dataset clínico diferente,
+             com dificuldade crescente e tempo limite próprio (25s nos primeiros, até 15s nos últimos).</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-icon">📋</div>
+        <div class="step-content">
+          <h4>Leia o briefing antes de cada round</h4>
+          <p>Antes de cada round aparece uma tela com o contexto clínico do dataset, o tempo disponível,
+             o nível de dificuldade e uma dica quando o dataset tiver alguma particularidade
+             (relação negativa, outliers, escala comprimida). Leia antes de clicar em
+             <strong>"Começar Rodada →"</strong>.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-icon">🔵</div>
+        <div class="step-content">
+          <h4>Ajuste a inclinação da reta</h4>
+          <p>Arraste os <strong>círculos azuis</strong> nas extremidades da reta para cima ou para baixo.
+             Cada círculo pivota a reta ao redor da extremidade oposta, alterando β₁ (inclinação).
+             Os segmentos laranjas são os resíduos — observe-os encolherem quando o ajuste melhora.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-icon">↕️</div>
+        <div class="step-content">
+          <h4>Ajuste o intercepto da reta</h4>
+          <p>Arraste a <strong>linha azul</strong> diretamente para cima ou para baixo (sem usar os círculos).
+             Isso translada a reta verticalmente, alterando β₀ (intercepto) sem mudar a inclinação.
+             O percentual <strong>"% do ótimo"</strong> no cabeçalho atualiza em tempo real.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-icon">🎯</div>
+        <div class="step-content">
+          <h4>Confirme quando estiver satisfeito</h4>
+          <p>Quando sentir que o ajuste está bom, clique em <strong>"🎯 Confirmar ajuste"</strong>
+             para terminar antes do tempo. Quanto mais cedo você confirmar com um bom ajuste,
+             maior o <strong>bônus de velocidade</strong> — que pode valer até 50 pts extras por round.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-icon">❓</div>
+        <div class="step-content">
+          <h4>Responda o quiz entre rounds</h4>
+          <p>Após cada round (exceto o último), aparecem <strong>4 perguntas conceituais</strong>
+             sobre o que você acabou de praticar. Se errar, o app mostra a resposta correta e
+             uma explicação — leia antes de clicar em "Continuar →". As perguntas evoluem ao longo
+             do Lab: de conceitos básicos até causalidade e limitações do modelo linear.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">7</div>
+        <div class="step-icon">🗺️</div>
+        <div class="step-content">
+          <h4>Explore a Paisagem do RSS após o round</h4>
+          <p>No final de cada round, a solução ótima é revelada e o heatmap fica disponível.
+             Abra <strong>"Paisagem do RSS"</strong> para ver o espaço de parâmetros: cada pixel é uma
+             combinação de β₁ e β₀, cores escuras = RSS baixo. O ponto branco é sua posição,
+             o ponto verde é a solução OLS — observe como a superfície é uma parabolóide com
+             mínimo único.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip-box">
+      <h4>💡 Dicas para pontuar bem</h4>
+      <ul>
+        <li>No Round 1 (Sono × Cognição) a relação é clara e o tempo é generoso — use para calibrar sua intuição.</li>
+        <li>Rounds com relação negativa: a reta deve descer da esquerda para a direita. O hint no briefing avisa quando isso ocorre.</li>
+        <li>No Round 3 (IMC × Pressão) há outliers propositais — observe como eles "puxam" a solução OLS.</li>
+        <li>Confirme cedo: um ajuste de 80% confirmado com 20s restantes pode valer mais que 90% no último segundo.</li>
+        <li>Leia os feedbacks do quiz com atenção — eles contêm os conceitos que mais caem em provas de bioestatística.</li>
+      </ul>
+    </div>
+
+    <div class="como-usar-cta">
+      <button class="btn-cta-blue" onclick="showSection('atividade')">🎮 Jogar agora →</button>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     SEÇÃO: CRÉDITOS (parte da página teoria)
+════════════════════════════════════════ -->
+<div id="sec-creditos" class="section">
+  <div class="section-page-divider"></div>
+  <div class="creditos-body">
+
+    <div class="profile-avatar">👨‍🏫</div>
+    <div class="profile-name">Prof. Henrique Alvarenga</div>
+    <div class="profile-role">Médico Psiquiatra, Professor do curso de Medicina da UFSJ</div>
+
+    <div class="profile-links">
+      <a href="https://henriquealvarenga.com" target="_blank" class="profile-link">
+        <span class="link-icon">🌐</span>
+        <span>
+          <span class="link-label">Site</span>
+          <span class="link-value">henriquealvarenga.com</span>
+        </span>
+      </a>
+      <a href="mailto:henriquealvarenga@gmail.com" class="profile-link">
+        <span class="link-icon">✉️</span>
+        <span>
+          <span class="link-label">E-mail</span>
+          <span class="link-value">henriquealvarenga@gmail.com</span>
+        </span>
+      </a>
+      <a href="https://www.linkedin.com/in/henriquealvarengasilva/" target="_blank" class="profile-link">
+        <span class="link-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#0a66c2">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+        </span>
+        <span>
+          <span class="link-label">LinkedIn</span>
+          <span class="link-value">henriquealvarengasilva</span>
+        </span>
+      </a>
+      <a href="https://www.instagram.com/henriquealvarengadasilva" target="_blank" class="profile-link">
+        <span class="link-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24">
+            <defs>
+              <radialGradient id="ig-rg" cx="30%" cy="107%" r="150%">
+                <stop offset="0%"  stop-color="#fdf497"/>
+                <stop offset="5%"  stop-color="#fdf497"/>
+                <stop offset="45%" stop-color="#fd5949"/>
+                <stop offset="60%" stop-color="#d6249f"/>
+                <stop offset="90%" stop-color="#285aeb"/>
+              </radialGradient>
+            </defs>
+            <path fill="url(#ig-rg)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+          </svg>
+        </span>
+        <span>
+          <span class="link-label">Instagram</span>
+          <span class="link-value">@henriquealvarengadasilva</span>
+        </span>
+      </a>
+      <a href="https://orcid.org/0000-0001-9799-5240" target="_blank" class="profile-link">
+        <span class="link-icon">🔬</span>
+        <span>
+          <span class="link-label">ORCID</span>
+          <span class="link-value">0000-0001-9799-5240</span>
+        </span>
+      </a>
+      <a href="http://lattes.cnpq.br/6147640440978297" target="_blank" class="profile-link">
+        <span class="link-icon">📄</span>
+        <span>
+          <span class="link-label">Currículo Lattes</span>
+          <span class="link-value">lattes.cnpq.br</span>
+        </span>
+      </a>
+    </div>
+
+    <hr class="divider">
+
+    <div class="about-app">
+      <h4>📱 Sobre esta Atividade</h4>
+      <p>
+        Esta atividade interativa foi desenvolvida para apoiar o ensino de
+        regressão linear e mínimos quadrados em cursos da área da saúde.
+        O objetivo é proporcionar aprendizagem ativa: ao ajustar a reta manualmente,
+        o aluno desenvolve intuição visual sobre o que significa minimizar o RSS.
+      </p>
+      <p>
+        Os datasets são fictícios, apenas para fins ilustrativos.
+      </p>
+      <div class="tech-badges">
+        <span class="tech-badge">JavaScript</span>
+        <span class="tech-badge">D3.js v7</span>
+        <span class="tech-badge">HTML5 Canvas</span>
+        <span class="tech-badge">GitHub Pages</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer estilo BRL -->
+  <footer class="site-footer">
+    <!-- Onda decorativa no topo -->
+    <div class="site-footer-wave">
+      <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,36 C180,72 360,0 540,36 C720,72 900,8 1080,40 C1260,72 1380,20 1440,36 L1440,72 L0,72 Z" fill="#0f172a"/>
+      </svg>
+    </div>
+
+    <div class="site-footer-inner">
+      <!-- Badges -->
+      <div class="site-footer-badges">
+        <span class="site-footer-badge">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          Código Aberto
+        </span>
+        <span class="site-footer-sep">·</span>
+        <span>MIT License</span>
+        <span class="site-footer-sep">·</span>
+        <span>UFSJ</span>
+      </div>
+
+      <!-- Crédito -->
+      <div class="site-footer-credit">
+        Feito com <span class="site-footer-heart">♡</span> por
+        <a href="https://henriquealvarenga.com" target="_blank" class="site-footer-name">Prof Henrique Alvarenga da Silva</a>
+        <span class="site-footer-sep">·</span>
+        <button class="site-footer-link" onclick="showSection('creditos')">Créditos</button>
+      </div>
+    </div>
+  </footer>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     SCRIPTS — ordem de dependência:
+     d3 → math → state → datasets → plot
+          → heatmap → game → screens → app
+════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════
+     EASTER EGG — O Número da Sorte
+     Ativado por 7 cliques no logo da home
+════════════════════════════════════════ -->
+<div id="easter-egg-overlay" class="ee-overlay" onclick="closeEasterEgg(event)">
+  <div class="ee-modal">
+    <button class="ee-close" onclick="closeEasterEgg()">&times;</button>
+
+    <div class="ee-header">
+      <div class="ee-logo">7️⃣</div>
+      <h2 class="ee-title">O Número da Sorte</h2>
+      <p class="ee-subtitle">Você encontrou o easter egg. Aqui vão sete fatos sobre o número sete.</p>
+    </div>
+
+    <div class="ee-body">
+
+      <div class="ee-section">
+        <h3>A lei de Miller</h3>
+        <p>Em 1956, o psicólogo George Miller publicou na <em>Psychological Review</em> o artigo "The Magical Number Seven, Plus or Minus Two: Some Limits on Our Capacity for Processing Information". Tornou-se um dos textos mais citados da história da psicologia. A ideia central era simples e poderosa: nossa memória de trabalho consegue lidar, em média, com algo entre cinco e nove itens ao mesmo tempo, tendo sete como referência.</p>
+        <p>Os números de telefone locais com sete dígitos já existiam antes disso — o padrão norte-americano havia sido adotado em 1947 —, mas o trabalho de Miller ajudou a explicar por que essa quantidade parecia tão natural para a memória humana. Hoje lidamos com números de dez ou onze dígitos e quase ninguém os decora. Transferimos essa tarefa para o celular. O cérebro, porém, continua essencialmente o mesmo. Mudou a prótese, não o limite.</p>
+      </div>
+
+      <div class="ee-section">
+        <h3>O número mais "aleatório" do mundo</h3>
+        <p>Há um achado curioso da psicologia experimental: quando se pede a alguém que escolha, de maneira supostamente aleatória, um número entre um e dez, o sete aparece com frequência desproporcional. Isso foi observado em diferentes contextos e culturas. O curioso é o paradoxo: justamente por ser o mais escolhido, o sete acaba sendo o menos aleatório de todos.</p>
+        <p>Esse pequeno experimento revela algo importante. O ser humano tem intuições muito frágeis sobre acaso, probabilidade e aleatoriedade. Boa parte da pesquisa sobre vieses cognitivos, especialmente a partir dos trabalhos de Daniel Kahneman e Amos Tversky, mostrou exatamente isso: nossa mente gosta de acreditar que reconhece o acaso, mas quase sempre o reconstrói à sua maneira.</p>
+      </div>
+
+      <div class="ee-section">
+        <h3>O segredo de 142857</h3>
+        <p>Basta dividir um por sete para aparecer uma pequena maravilha:</p>
+        <div class="ee-math">0,142857&thinsp;142857&thinsp;142857…</div>
+        <p>Os mesmos seis dígitos se repetem indefinidamente. E o mais impressionante vem depois. Se multiplicarmos 142857 por 2, obtemos 285714. Por 3, 428571. Por 4, 571428. Por 5, 714285. Por 6, 857142. Os algarismos permanecem os mesmos; só mudam de lugar. E, ao multiplicar por 7, chegamos a 999999.</p>
+        <p>Trata-se de um número cíclico. Não é truque, nem numerologia: é uma propriedade matemática ligada ao fato de sete ser um número primo cujo inverso, em base decimal, produz um período máximo. É daqueles casos em que a matemática parece fazer uma pequena performance diante dos nossos olhos.</p>
+      </div>
+
+      <div class="ee-section">
+        <h3>A semana</h3>
+        <p>A semana de sete dias nasceu na Antiguidade e costuma ser associada à tradição mesopotâmica, especialmente aos babilônios. Sua formação está ligada aos sete corpos celestes visíveis a olho nu: Sol, Lua, Marte, Mercúrio, Júpiter, Vênus e Saturno.</p>
+        <p>Na tradição astrológico-astronômica antiga, cada hora do dia era atribuída a um desses astros em sequência, e o astro que presidia a primeira hora acabava dando nome ao dia inteiro. Esse vestígio ficou muito claro em várias línguas europeias: <em>Sunday</em> é o dia do Sol, <em>Monday</em> o da Lua, <em>Saturday</em> o de Saturno.</p>
+        <p>Em português, a lógica mudou. A tradição cristã substituiu os nomes pagãos por uma numeração litúrgica: segunda, terça, quarta. Restaram apenas sábado, vindo de <em>Shabbat</em>, e domingo, que ganhou outro destino etimológico — vem de <em>dies dominicus</em>, "dia do Senhor", e não mais de <em>dies solis</em>. Nas línguas românicas, essa substituição ficou bem marcada: português <em>domingo</em>, espanhol <em>domingo</em>, italiano <em>domenica</em>, francês <em>dimanche</em>.</p>
+      </div>
+
+      <div class="ee-section">
+        <h3>Na música</h3>
+        <p>A escala diatônica ocidental tem sete notas. E o sétimo grau da escala — a chamada sensível — exerce uma atração muito particular sobre a tônica. Ele cria uma tensão que pede resolução. Quem já ouviu uma melodia "parada" nesse ponto sabe a sensação: algo parece em suspensão, como se a música ainda não tivesse terminado de dizer o que precisava.</p>
+        <p>Esse jogo entre tensão e repouso é uma das bases da música tonal. Está na tradição clássica, no jazz, na canção popular. O sete aparece ali não como conclusão, mas como iminência. Não como descanso, e sim como impulso.</p>
+      </div>
+
+      <div class="ee-section">
+        <h3>Sete vértebras</h3>
+        <p>Há um fato anatômico que sempre surpreende: quase todos os mamíferos têm sete vértebras cervicais. Humanos têm sete. Girafas também. Baleias, morcegos, quase todos igualmente. O pescoço muda de tamanho, de função, de proporção — mas o número costuma permanecer.</p>
+        <p>As exceções existem e são conhecidas, como algumas preguiças do gênero <em>Bradypus</em>, que podem ter entre cinco e nove, e os peixes-boi, que têm seis. Ainda assim, a persistência do sete ao longo da evolução é impressionante. Trata-se de um exemplo clássico de restrição do desenvolvimento: certas estruturas ficam tão profundamente integradas ao embrião em formação que modificá-las cobra um preço evolutivo alto demais.</p>
+      </div>
+
+      <div class="ee-section">
+        <h3>Pintar o sete</h3>
+        <p>No Brasil, "pintar o sete" é fazer algo de modo espalhafatoso, marcante, impossível de ignorar. A origem da expressão não é clara, o que combina bastante com ela. Algumas expressões sobrevivem justamente porque ninguém consegue explicá-las por completo.</p>
+        <p>Talvez haja algo disso aqui também. Chegar até o fim desta Liga, ajustar sete retas contra o relógio, atravessar sete conjuntos de ideias e sair com a sensação de que algo realmente foi aprendido — isso, sim, é pintar o sete.</p>
+      </div>
+
+    </div><!-- /ee-body -->
+
+    <div class="ee-footer">
+      Sete rounds. Sete oportunidades de entender um pouco melhor como o mundo às vezes se deixa organizar em linhas retas.
+    </div>
+
+  </div><!-- /ee-modal -->
+</div><!-- /easter-egg-overlay -->
+
+<script src="js/math.js"></script>
+<script src="js/state.js"></script>
+<script src="js/datasets.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/plot.js"></script>
+<script src="js/heatmap.js"></script>
+<script src="js/game.js"></script>
+<script src="js/screens.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
