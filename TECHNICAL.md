@@ -1,7 +1,8 @@
 # Linear Regression Lab — Documentação Técnica
 
 > **Audiência:** desenvolvedor que precisa entender, manter ou estender o código.  
-> **Stack:** JavaScript vanilla · D3.js v7 · HTML5 Canvas · CSS puro · GitHub Pages
+> **Stack:** JavaScript vanilla · D3.js v7 · HTML5 Canvas · CSS puro · GitHub Pages  
+> **DOI:** [10.5281/zenodo.19650334](https://doi.org/10.5281/zenodo.19650334)
 
 ---
 

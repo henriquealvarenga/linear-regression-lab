@@ -133,6 +133,13 @@ body {
   font-size: 1rem;
   margin: 0 2px;
 }
+.site-footer-doi {
+  color: #475569;
+  text-decoration: none;
+  font-size: 0.78rem;
+  transition: color 0.18s;
+}
+.site-footer-doi:hover { color: #c7d2fe; }
 .site-footer-name {
   color: #94a3b8;
   font-weight: 600;
