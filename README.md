@@ -39,4 +39,11 @@ MIT License
 
 ## Como citar
 
-Alvarenga, H. (2025). *Linear Regression Lab* [Software]. Zenodo. https://doi.org/10.5281/zenodo.19650334
+**ABNT**  
+SILVA, H. A. *Linear Regression Lab* [Software]. Zenodo, 2026. DOI: 10.5281/zenodo.19650334
+
+**APA**  
+Silva, H. A. (2026). *Linear Regression Lab* [Software]. Zenodo. https://doi.org/10.5281/zenodo.19650334
+
+**Vancouver**  
+Silva HA. Linear Regression Lab [Software]. Zenodo; 2026. Available from: https://doi.org/10.5281/zenodo.19650334
